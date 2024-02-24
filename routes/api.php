@@ -2,7 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SANCTUM\UserController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AgenceController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\DirectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,11 +30,41 @@ Route::controller(UserController::class)->group(function() {
 
 // Protected routes of product and logout
 Route::middleware('auth:sanctum')->group( function () {
-    Route::post('/logout', [UserController::class, 'logout']);
+    // USER
+    Route::prefix('user')->group(function () {
+        Route::controller(UserController::class)->group(function() {
+            Route::get('/{id}', 'one_user');
+        });
+    });
 
-    // Route::controller(ProductController::class)->group(function() {
-    //     Route::post('/products', 'store');
-    //     Route::post('/products/{id}', 'update');
-    //     Route::delete('/products/{id}', 'destroy');
-    // });
+    // AGENCE
+    Route::prefix('agence')->group(function () {
+        Route::controller(AgenceController::class)->group(function() {
+            Route::post('/create', 'register');
+            Route::get('/liste', 'all_agences');
+            Route::put('/edit', 'update_agence');
+            Route::delete('/{id}', 'delete_agence');
+        });
+    });
+
+    // DIRECTION
+    Route::prefix('direction')->group(function () {
+        Route::controller(DirectionController::class)->group(function() {
+            Route::post('/create', 'register');
+            Route::get('/liste', 'all_directions');
+        });
+    });
+
+    // SERVICE
+    Route::prefix('service')->group(function () {
+        Route::controller(ServiceController::class)->group(function() {
+            Route::post('/create', 'register');
+            Route::get('/liste', 'all_services');
+            Route::put('/edit', 'update_service');
+        });
+    });
+
+
+
+    Route::post('/logout', [UserController::class, 'logout']);
 });
