@@ -28,6 +28,7 @@ use App\Http\Controllers\DemandeNoteFraisController;
 Route::controller(UserController::class)->group(function() {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
+    Route::get('/test-mail', 'test');
 });
 
 // Protected routes of product and logout

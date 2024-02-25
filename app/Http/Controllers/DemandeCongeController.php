@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMail;
 use App\Models\UploadFile;
 use App\Models\DemandeConge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class DemandeCongeController extends Controller
@@ -54,6 +57,9 @@ class DemandeCongeController extends Controller
                 $uploadFile->save();
             }
         }
+
+        Mail::to(Auth::user()->email)
+            ->send(new SendMail('Confirmation de réception de votre demande (Congé)', Auth::user()->name ));
 
         $response = [
             'status' => true,

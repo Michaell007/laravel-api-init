@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMail;
 use App\Models\UploadFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\DemandeNoteFrais;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class DemandeNoteFraisController extends Controller
@@ -53,6 +56,9 @@ class DemandeNoteFraisController extends Controller
                 $uploadFile->save();
             }
         }
+
+        Mail::to(Auth::user()->email)
+            ->send(new SendMail('Confirmation de réception de votre demande (Note de frais)', Auth::user()->name ));
 
         $response = [
             'status' => true,
