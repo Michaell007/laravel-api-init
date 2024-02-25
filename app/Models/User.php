@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Service;
+use App\Models\DemandeConge;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,5 +50,9 @@ class User extends Authenticatable
 
     public function service() {
         return $this->belongsTo(Service::class);
+    }
+
+    public function demande_conges() {
+        return $this->hasMany(DemandeConge::class);
     }
 }

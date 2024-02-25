@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AgenceController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DirectionController;
+use App\Http\Controllers\DemandeCongeController;
+use App\Http\Controllers\DemandeNoteFraisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +63,28 @@ Route::middleware('auth:sanctum')->group( function () {
             Route::post('/create', 'register');
             Route::get('/liste', 'all_services');
             Route::put('/edit', 'update_service');
+        });
+    });
+
+    // DEMANDE CONGES
+    Route::prefix('demande-conge')->group(function () {
+        Route::controller(DemandeCongeController::class)->group(function() {
+            Route::post('/create', 'register');
+            Route::post('/attribution/{id}', 'attribution_conge');
+            Route::post('/autorisation/{id}', 'validate_conge');
+            Route::post('/refus/{id}', 'refus_conge');
+            Route::get('/liste', 'all_conges');
+        });
+    });
+
+    // DEMANDE CONGES
+    Route::prefix('demande-note')->group(function () {
+        Route::controller(DemandeNoteFraisController::class)->group(function() {
+            Route::post('/create', 'register');
+            Route::post('/attribution/{id}', 'attribution_frais');
+            Route::post('/autorisation/{id}', 'validate_frais');
+            Route::post('/refus/{id}', 'refus_frais');
+            Route::get('/liste', 'all_frais');
         });
     });
 
